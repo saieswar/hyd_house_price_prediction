@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>House Price Prediction</h2>
+        <form action="/predict_data" method="post">
+            <label for="title">Title:</label>
+            <input type="text" name="title" required>
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" required>
+
+            <label for="rate_persqft">Rate Per Sqft:</label>
+            <input type="number" step="any" name="rate_persqft" required>
+
+            <label for="area_insqft">Area (Sqft):</label>
+            <input type="number" step="any" name="area_insqft" required>
+
+            <label for="building_status">Building Status:</label>
+            <input type="text" name="building_status" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+            <div class="result">{{ prediction }} Lakhs</div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

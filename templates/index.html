@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    
+    <!-- Bootstrap for Styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery for Autocomplete -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI for Autocomplete -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>House Price Prediction</h2>
+        
+        <form action="/predict_data" method="post">
+            <label for="title">Building Type:</label>
+            <input type="text" name="title" id="title" placeholder="e.g., 3 BHK Apartment" value="{{ request.form['title'] if request.form['title'] else '' }}" required>
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" id="location" placeholder="e.g., Jubilee Hills, Hyderabad" value="{{ request.form['location'] if request.form['location'] else '' }}" required>
+
+            <label for="rate_persqft">Rate Per Sqft:</label>
+            <input type="number" step="any" name="rate_persqft" placeholder="e.g., 5000" value="{{ request.form['rate_persqft'] if request.form['rate_persqft'] else '' }}" required>
+
+            <label for="area_insqft">Area (Sqft):</label>
+            <input type="number" step="any" name="area_insqft" placeholder="e.g., 1200" value="{{ request.form['area_insqft'] if request.form['area_insqft'] else '' }}" required>
+
+            <label for="building_status">Building Status:</label>
+            <input type="text" name="building_status" id="building_status" placeholder="e.g., Under Construction / Ready to Move" value="{{ request.form['building_status'] if request.form['building_status'] else '' }}" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+            <div class="result">Predicted Price: {{ prediction }} Lakhs</div>
+        {% endif %}
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Fetch autocomplete options from Flask API
+            $.getJSON('/get_options', function (data) {
+                $("#title").autocomplete({ source: data.titles });
+                $("#location").autocomplete({ source: data.locations });
+                $("#building_status").autocomplete({ source: data.building_statuses });
+            });
+        });
+    </script>
+
+</body>
+</html>
